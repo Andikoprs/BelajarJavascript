@@ -35,3 +35,5 @@ console.log(nilai);
 
 // const data = object.find((eachMatrix) => {});
 // console.log(data);
+
+//tes
