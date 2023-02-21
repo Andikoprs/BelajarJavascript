@@ -19,17 +19,21 @@ async function getAllUsers(req, res) {
 
 async function addUser(req, res) {
   console.log(req.body);
-  dataUsers.push(req.body);
-  res.json(dataUsers);
+  if (req.body.nickName !== "" && req.body.id !== "") {
+    dataUsers.push(req.body);
+    res.json(dataUsers);
+  } else if (req.body.nickName == "" || req.body.id == "") {
+    res.json({ message: "value not identify" });
+  }
 }
 
 async function updateData(req, res) {
-  const updateDataUserIndex = dataUsers.findIndex((eachData) => {
+  const userIndex = dataUsers.findIndex((eachData) => {
     if (eachData.id === req.params.id) {
       return eachData;
     }
   });
-  dataUsers[updateDataUserIndex].nickName = req.body.nickName;
+  dataUsers[userIndex].nickName = req.body.nickName;
   res.json(dataUsers);
 }
 
@@ -55,6 +59,9 @@ async function getDataById(req, res) {
       return eachData;
     }
   });
+  if (!getId) {
+    res.json({ message: "Error. Data not found" });
+  }
   res.json(getId);
 }
 
