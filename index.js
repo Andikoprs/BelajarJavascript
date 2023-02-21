@@ -3,6 +3,7 @@ const app = express();
 const port = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+const controller = require('./controller')
 
 const dataUsers = [
   {
@@ -25,9 +26,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/users", (req, res) => {
-  res.json(dataUsers);
-});
+app.get("/users", controller.getAllUsers);
 
 //api insert
 app.post("/users", (req, res) => {
