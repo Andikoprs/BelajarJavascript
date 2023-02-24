@@ -1,3 +1,5 @@
+const model = require("./model");
+
 const dataUsers = [
   {
     nickName: "Sasa",
@@ -18,11 +20,12 @@ async function getAllUsers(req, res) {
 }
 
 async function addUser(req, res) {
-  console.log(req.body);
-  if (req.body.nickName !== "" && req.body.id !== "") {
-    dataUsers.push(req.body);
-    res.json(dataUsers);
-  } else if (req.body.nickName == "" || req.body.id == "") {
+  if (req.body.nickName) {
+    const user = await model.create({
+      nick_name: req.body.nickName,
+    });
+    res.json(user);
+  } else if (!req.body.nickName) {
     res.json({ message: "value not identify" });
   }
 }
@@ -54,15 +57,8 @@ async function getAllNickNames(req, res) {
 }
 
 async function getDataById(req, res) {
-  const getId = dataUsers.find((eachData) => {
-    if (eachData.id === req.params.id) {
-      return eachData;
-    }
-  });
-  if (!getId) {
-    res.json({ message: "Error. Data not found" });
-  }
-  res.json(getId);
+  const user = await model.findById(req.params.id);
+  res.json(user);
 }
 
 module.exports = {

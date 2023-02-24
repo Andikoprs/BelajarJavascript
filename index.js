@@ -4,6 +4,7 @@ const port = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 const controller = require("./controller");
+require("./connection");
 
 app.get("/users", controller.getAllUsers);
 
@@ -22,5 +23,5 @@ app.get("/users/nickNames", controller.getAllNickNames);
 app.get("/users/:id", controller.getDataById);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Example app listening on http://localhost:${port}`);
 });
