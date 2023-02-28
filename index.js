@@ -15,7 +15,7 @@ app.post("/users", controller.addUser);
 app.put("/users/:id", controller.updateData);
 
 //api delete
-app.delete("/users/:id", controller.deleteData);
+app.delete("/users", controller.deleteData);
 
 //api get
 app.get("/users/nickNames", controller.getAllNickNames);
