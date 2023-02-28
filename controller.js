@@ -26,6 +26,7 @@ async function addUser(req, res) {
   if (req.body.nickName) {
     const user = await model.create({
       nick_name: req.body.nickName,
+      age: req.body.age
     });
     res.json(user);
   } else if (!req.body.nickName) {
@@ -47,20 +48,13 @@ async function updateData(req, res) {
 }
 
 async function deleteData(req, res) {
-  if (req.body.nick_name || req.body.age) {
-    let user = await model.deleteOne(req.body);
+  if (req.params) {
+    let user = await model.deleteOne(req.params);
     const allUser = await model.find({});
     res.json(allUser);
-  } else if (!req.body.nick_name || !req.body.age) {
+  } else if (!req.params) {
     res.json({ message: "value not identify" });
   }
-  // const dataUserIndex = dataUsers.findIndex((eachData) => {
-  //   if (eachData.id === req.params.id) {
-  //     return eachData;
-  //   }
-  // });
-  // dataUsers.splice(dataUserIndex, 1);
-  // res.json(dataUsers);
 }
 
 async function getAllNickNames(req, res) {
