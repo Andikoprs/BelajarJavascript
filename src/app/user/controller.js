@@ -1,13 +1,13 @@
-const model = require("./model");
+const UserModel = require("./model");
 
 async function getAllUsers(req, res) {
-  const allUser = await model.find({});
-  res.json(allUser);
+  const users = await UserModel.find({});
+  res.json(users);
 }
 
 async function addUser(req, res) {
   if (req.body.nickName) {
-    const user = await model.create({
+    const user = await UserModel.create({
       nick_name: req.body.nickName,
       age: req.body.age,
     });
@@ -21,7 +21,7 @@ async function updateData(req, res) {
   if (req.body.nick_name || req.body.age) {
     const filter = { _id: req.params.id };
     const update = req.body;
-    let user = await model.findOneAndUpdate(filter, update, {
+    let user = await UserModel.findOneAndUpdate(filter, update, {
       new: true,
     });
     res.json(user);
@@ -32,16 +32,16 @@ async function updateData(req, res) {
 
 async function deleteData(req, res) {
   if (req.params) {
-    let user = await model.deleteOne(req.params);
-    const allUser = await model.find({});
-    res.json(allUser);
+    await UserModel.deleteOne(req.params);
+    const users = await UserModel.find({});
+    res.json(users);
   } else if (!req.params) {
     res.json({ message: "value not identify" });
   }
 }
 
 async function getDataById(req, res) {
-  const user = await model.findById(req.params.id);
+  const user = await UserModel.findById(req.params.id);
   res.json(user);
 }
 
@@ -50,6 +50,5 @@ module.exports = {
   addUser,
   deleteData,
   updateData,
-  getAllNickNames,
   getDataById,
 };
