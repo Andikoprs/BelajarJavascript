@@ -1,5 +1,3 @@
-const { object } = require("webidl-conversions");
-const { findOneAndUpdate } = require("./model");
 const model = require("./model");
 
 async function getAllUsers(req, res) {
