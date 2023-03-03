@@ -2,21 +2,6 @@ const { object } = require("webidl-conversions");
 const { findOneAndUpdate } = require("./model");
 const model = require("./model");
 
-const dataUsers = [
-  {
-    nickName: "Sasa",
-    id: "1",
-  },
-  {
-    nickName: "Susu",
-    id: "2",
-  },
-  {
-    nickName: "Sisi",
-    id: "3",
-  },
-];
-
 async function getAllUsers(req, res) {
   const allUser = await model.find({});
   res.json(allUser);
@@ -26,7 +11,7 @@ async function addUser(req, res) {
   if (req.body.nickName) {
     const user = await model.create({
       nick_name: req.body.nickName,
-      age: req.body.age
+      age: req.body.age,
     });
     res.json(user);
   } else if (!req.body.nickName) {
@@ -55,12 +40,6 @@ async function deleteData(req, res) {
   } else if (!req.params) {
     res.json({ message: "value not identify" });
   }
-}
-
-async function getAllNickNames(req, res) {
-  const getAllNickNames = dataUsers.map((eachData) => eachData.nickName);
-  console.log(getAllNickNames);
-  res.json(getAllNickNames);
 }
 
 async function getDataById(req, res) {
