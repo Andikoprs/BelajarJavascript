@@ -22,6 +22,12 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    book_ids: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "book",
+      },
+    ],
   },
   {
     timestamps: true,

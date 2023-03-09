@@ -3,8 +3,15 @@ const UserModel = require("./user.model");
 const common = require("../../utils/common");
 
 async function getUsers(req, res) {
-  const users = await UserModel.find({});
-  res.json(users);
+  const users = await UserModel.find();
+  return res.json(users);
+}
+
+async function getUserById(req, res) {
+  const user = await UserModel.findById(req.params._id).populate({
+    path: "book_ids",
+  });
+  return res.json(user);
 }
 
 async function createUser(req, res) {
@@ -28,15 +35,19 @@ async function createUser(req, res) {
 }
 
 async function updateUser(req, res) {
-  if (req.body.nick_name || req.body.age) {
-    const filter = { _id: req.params.id };
+  try {
+    if (!Object.keys(req.body).length) {
+      return res.json({ message: "body request can not be empty!" });
+    }
+
     const update = req.body;
-    let user = await UserModel.findOneAndUpdate(filter, update, {
+    let user = await UserModel.findByIdAndUpdate(req.params._id, update, {
       new: true,
-    });
-    res.json(user);
-  } else if (!req.body.nick_name || !req.body.age) {
-    res.json({ message: "value not identify" });
+    }).populate({ path: "book_ids" });
+
+    return res.json(user);
+  } catch (error) {
+    return res.json({ error });
   }
 }
 
@@ -44,15 +55,10 @@ async function deleteUser(req, res) {
   if (req.params) {
     await UserModel.deleteOne(req.params);
     const users = await UserModel.find({});
-    res.json(users);
+    return res.json(users);
   } else if (!req.params) {
-    res.json({ message: "value not identify" });
+    return res.json({ message: "value not identify" });
   }
-}
-
-async function getUserById(req, res) {
-  const user = await UserModel.findById(req.params.id);
-  res.json(user);
 }
 
 async function login(req, res) {
@@ -85,9 +91,9 @@ async function login(req, res) {
 
 module.exports = {
   getUsers,
+  getUserById,
   createUser,
   deleteUser,
   updateUser,
-  getUserById,
   login,
 };
