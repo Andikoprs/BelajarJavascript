@@ -3,7 +3,22 @@ const UserModel = require("./user.model");
 const common = require("../../utils/common");
 
 async function getUsers(req, res) {
-  const users = await UserModel.find();
+  const users = await UserModel.aggregate([
+    {
+      $match: {
+        nick_name: "shaun murphy",
+      },
+    },
+    {
+      $lookup: {
+        from: "books",
+        localField: "book_ids",
+        foreignField: "_id",
+        as: "books",
+      },
+    },
+  ]);
+
   return res.json(users);
 }
 
